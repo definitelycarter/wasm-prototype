@@ -51,10 +51,13 @@ pub fn start() -> Result<(), JsValue> {
     .system(Box::new(HelloWorld))
     .build();
     
-  game.setup(&mut world);
+  game.setup();
+  // uncomment this line to see `game` does not live long enough
+  // game.run_now();
 
   *g.borrow_mut() = Some(Closure::wrap(Box::new(move || {
-    game.run_now(&mut world);
+    // uncomment this line to see another lifetime error.
+    // game.run_now();
     request_animation_frame(f.borrow().as_ref().unwrap());
   }) as Box<dyn FnMut()>));
 
